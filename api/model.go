@@ -5,6 +5,7 @@ type OrderBookResponse struct {
 	EventID              int      `json:"event_id"`
 	SocketSequenceNumber int      `json:"socket_sequence"`
 	Events               []Events `json:"events"`
+	Timestamp            int64    `json:"timestamp"`
 }
 
 type Events struct {
