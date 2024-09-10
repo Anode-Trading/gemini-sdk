@@ -64,7 +64,6 @@ func StreamOrderBook(pair string, stopChan chan struct{}, geminiClosedChan chan<
 				doneStreaming = true
 				continue
 			}
-			log.Println("seq num ws: ", orderBookResponse.SocketSequenceNumber)
 			select {
 			case <-stopChan:
 				log.Println("closing connection as requested")
