@@ -9,7 +9,7 @@ import (
 
 func StreamOrderBook(pair string, stopChan chan struct{}, geminiClosedChan chan<- struct{}, dataChan chan OrderBookResponse) {
 
-	url := fmt.Sprint(baseUrl, v1, orderBookPath, pair)
+	url := fmt.Sprint(wsBaseUrl, v1, orderBookPath, pair)
 	c, _, err := websocket.DefaultDialer.Dial(url, nil)
 	if err != nil {
 		log.Fatal("dial:", err)
@@ -64,7 +64,6 @@ func StreamOrderBook(pair string, stopChan chan struct{}, geminiClosedChan chan<
 				doneStreaming = true
 				continue
 			}
-			log.Println("seq num ws: ", orderBookResponse.SocketSequenceNumber)
 			select {
 			case <-stopChan:
 				log.Println("closing connection as requested")

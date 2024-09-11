@@ -1,12 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"github.com/Anode-Trading/gemini/api"
 	"log"
 	"time"
 )
 
-func main() {
+func clientOrderBook() {
 	stopChan, doneStream := make(chan struct{}), make(chan struct{})
 	dataChan := make(chan api.OrderBookResponse)
 	go api.StreamOrderBook("BTCUSD", stopChan, doneStream, dataChan)
@@ -36,4 +37,24 @@ func main() {
 	}
 	log.Println("shutting down")
 
+}
+
+func clientSecurities() {
+	securities, err := api.GetSecurities()
+	if err != nil {
+		return
+	}
+	fmt.Println(securities)
+}
+
+func clientSecurityInfo() {
+	info, err := api.GetSecurityInfo("btcusd")
+	if err != nil {
+		return
+	}
+	fmt.Println(info)
+}
+
+func main() {
+	clientOrderBook()
 }
