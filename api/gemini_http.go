@@ -9,13 +9,14 @@ import (
 
 func GetSecurities() ([]string, error) {
 	var securities []string
-
 	url := fmt.Sprintf("%s%s%s", httpBaseUrl, v1, symbols)
+	client := NewHttpClient(2)
 
-	symbolResponse, err := http.Get(url)
+	symbolResponse, err := client.Get(url)
 	if err != nil || symbolResponse == nil || symbolResponse.Body == nil || symbolResponse.StatusCode != http.StatusOK {
 		return securities, fmt.Errorf("cannot get symbol details: %s", err)
 	}
+
 	defer symbolResponse.Body.Close()
 	symbolResponseBody, err := io.ReadAll(symbolResponse.Body)
 	if err != nil {
@@ -30,9 +31,10 @@ func GetSecurities() ([]string, error) {
 }
 func GetSecurityInfo(pair string) (SymbolDetails, error) {
 	var symbolDetails SymbolDetails
-
 	url := fmt.Sprintf("%s%s%s", httpBaseUrl, v1, fmt.Sprintf(symbolsDetails, pair))
-	symbolDetailsResponse, err := http.Get(url)
+	client := NewHttpClient(2)
+
+	symbolDetailsResponse, err := client.Get(url)
 	if err != nil || symbolDetailsResponse == nil || symbolDetailsResponse.Body == nil || symbolDetailsResponse.StatusCode != http.StatusOK {
 		return symbolDetails, fmt.Errorf("cannot get symbol details: %s", err)
 	}
